@@ -4,28 +4,64 @@ import 'package:expense_tracker/screens/home/views/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../stats/stats.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  // var widgetList = [
+  //   MainScreen(),
+  //   StatScreen(),
+  // ];
+
+  int index = 0;
+  late Color selectedItem = Colors.blue;
+  Color unselectedItem = Colors.grey;
+
+  // @override
+  // void initState() {
+  //   Color selectedItem = Theme.of(context).colorScheme.primary;
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(
             top: Radius.circular(30)
         ),
         child: BottomNavigationBar(
+          onTap: (value){
+            setState(() {
+              index = value;
+            });
+          },
+            // fixedColor: Colors.red,
+          //   selectedItemColor: Colors.red,
           backgroundColor: Colors.white,
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          elevation: 100,
-          items: const [
+          elevation: 4,
+          items: [
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.home),
-                label: 'Home'),
+                icon: Icon(
+                    CupertinoIcons.home,
+                  color: index == 0 ? selectedItem : unselectedItem
+                ),
+                label: 'Home'
+            ),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.graph_square_fill),
+                icon: Icon(
+                    CupertinoIcons.graph_square_fill,
+                    color: index == 1 ? selectedItem : unselectedItem
+                ),
                 label: 'Stats')
           ]
         ),
@@ -53,7 +89,9 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const MainScreen(),
+      body: index == 0
+        ? MainScreen()
+          : StatScreen()
     );
   }
 }
